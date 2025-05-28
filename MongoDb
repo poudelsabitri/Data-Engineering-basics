@@ -1,0 +1,158 @@
+Relational Database 
+- Relation database are not good for fix schema 
+- Relational database are not good for dynamic schema
+- transaction is situation : when one user is accessing  data  another user is upadting, and another is waiting then the data wiil be locked and the user  who is accessing the data will get  upadted but system wiill be locked untill it is updated. 
+- used to store the data in consitantly  eg. financial transaction
+- they are not highly available
+- Data need to be consistent
+ 
+ Eventually available  NO
+- Available  when one user is accessing  data  another user is upadting , and another is waiting then the user who is accessing the data will get older version of data but system will be available to the every user
+
+  MOngo DB
+- MongoDb is a cross-platform, document oriented datbase that provides, high performance, high availability, and easy scalability
+- MongoDb work on concept of collection and document
+- flexible to different cloud
+- self hostage
+- Table are like container (collection of dictionary)
+- We can add record interm of documnet 
+- Each document is added like a dictionary
+- NoSql are databases which are used to stored the data when you are not sure about schema
+- The activity we perform will only affect the record not whole database like relation data
+-  no strict requiremnt for strict consistancy
+
+Database 
+- Database is a physical container for collections. Each database get its own set of files on the file system.
+- Single MongoDb server typically has multiple database
+  
+ Collection 
+- Collection is a group of MongoDb documents. It is the equivalent of an RDBMS table. A collection exist within a single database.
+- collection do not enforce a schema.
+- Documents within a collection can have different fields.
+- Typically, all documents in a collection are of similar or related purpose
+
+ Document 
+- A document is a set of key-value pairs.
+- IT has Dynamic schema
+- Dyanmic schema means that documents in the same collection do not need to have the same set of field or structure
+- Common filed in a collection's documents may hold different types of data
+  
+- Every time you inser data sytem genarte sytem key 
+- 12 bytes of data (timestamp, machine id, process id , incrematal values)
+- always geting
+
+You can not do aggaeration in Dynamo DB you need to brith data from DynaoDB to Redshift 
+
+- Document Oriented Storage
+- Index on any attibute
+- replication and high availability
+- Auto- Sharding
+- Rich Query
+- Fast in -place updates
+- big data
+- Data hub
+- USer
+- NoSQL solution
+- User Data Management
+- Data Hub
+- Mobile application MongoDB are used
+- Fast upadted
+
+Data Modeling 
+ Denormalized data  Embedded Data MOdel
+In this model, you can have (embed) all the related data in a single document. It is also known as a de-normalized data model.
+For example, assume we are getting the details of employees in three different documents namely, Personal_details, Contact and Address, you can embed all the three documents in a single one as shown below –
+
+{
+  _id: ObjectId("..."),
+  Emp_ID: "10025AE336",
+  Personal_details: {
+    First_Name: "Radhika",
+    Last_Name: "Sharma",
+    Date_Of_Birth: "1995-09-26"
+  },
+  Contact: {
+    e-mail: "radhika_sharma.123@gmail.com",
+    phone: "9848022338"
+  },
+  Address: {
+    city: "Hyderabad",
+    Area: "Madapur",
+    State: "Telangana"
+  }
+}
+Normalized Data 
+{
+  _id: <ObjectId101>,
+  Emp_ID: "10025AE336"
+}
+{
+  _id: <ObjectId102>,
+  empDocID: "ObjectId101",
+  First_Name: "Radhika",
+  Last_Name: "Sharma",
+  Date_Of_Birth: "1995-09-26"
+}
+{
+  _id: <ObjectId103>,
+  empDocID: "ObjectId101",
+  e-mail: "radhika_sharma.123@gmail.com",
+  phone: "9848022338"
+}
+{
+  _id: <ObjectId104>,
+  empDocID: "ObjectId101",
+  city: "Hyderabad",
+  Area: "Madapur",
+  State: "Telangana"
+}
+ Note: If you find that one document size does not go beyound 16 MB then use Embedded Data model other wise use Normalized Data model 
+
+ Data types in MOngo DB 
+Datatypes
+•	String – This is the most commonly used datatype to store the data. String in MongoDB must be UTF-8 valid.
+•	Integer – This type is used to store a numerical value. Integer can be 32-bit or 64-bit depending upon your server.
+•	Boolean – This type is used to store a boolean (true/false) value.
+•	Double – This type is used to store floating point values.
+•	Min/Max keys – This type is used to compare a value against the lowest and highest BSON elements.
+•	Arrays – This type is used to store arrays or list or multiple values into one key.
+•	Timestamp – This can be handy for recording when a document has been modified or added.
+•	Object – This datatype is used for embedded documents.
+•	Null – This type is used to store a Null value.
+•	Date – This datatype is used to store the current date or time in UNIX time format. You can specify your own date time by creating object of Date and passing day, month, year into it.
+•	Object ID – This datatype is used to store the document’s ID.
+
+Aggragtion framework 
+- MongoDB version of SQL Group by
+- $match $group 
+
+connecting spark with mongodb  
+Spark has in-build connector  only for hive and HDFS for other you have to use the jar file to connect with Database system 
+mongosh "mongodb+srv://dbuser:dbpass@clustername.mongodb.net/mydb1" --apiVersion 1 --username dbuser
+
+Read from mongoDB 
+df = spark.read.format("com.mongodb.spark.sql.DefaultSource").option("uri", "mongodb+srv://dbuser:dbpass@clustername.mongodb.net/sampleDB.mycol").load()
+
+ Write in MongoDB 
+
+people.write.format("com.mongodb.spark.sql.DefaultSource").mode("append").option("uri","mongodb+srv://dbuser:dbpass@clustername.mongodb.net/mydb1.contacts").save()```
+
+#### Aggeration function GROUP in PostgreSQL 
+- db.mycol.aggregate([{$group : {_id : "$by", num_tutorial : {$sum : 1}}}])
+- db.mycol.aggregate([{$group : {_id : "$by", sumofLikes : {$sum : "$likes"}}}])
+- db.mycol.aggregate([{$group : {_id : "$by", avgOfLikes : {$avg : "$likes"}}}])
+- db.mycol.aggregate([{$group : {_id : "$by", minLikes : {$min : "$likes"}}}])
+- db.mycol.aggregate([{$group : {_id : "$by", maxLikes : {$max : "$likes"}}}])
+
+#### Functions in MongoDB 
+- db.mycol.find()
+- db.mycol.find().pretty()
+- Equality db.mycol.find({"by":"bootcamp"}).pretty()
+- Less than  db.mycol.find({"likes":{$lt:50}}).pretty()
+- Less Than Equals db.mycol.find({"likes":{$lte:50}}).pretty()
+- Greater Than db.mycol.find({"likes":{$gt:50}}).pretty()
+- Greater Than Equals db.mycol.find({"likes":{$gte:50}}).pretty()
+
+
+  
+  
