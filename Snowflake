@@ -1,0 +1,50 @@
+use role accountadmin;
+Purpose: Switches the session to the ACCOUNTADMIN role.
+Why: This role has the necessary privileges to create warehouses, databases, roles, and grant access.
+
+create warehouse dbt_wh with warehouse_size='x-small';
+Purpose: Creates a virtual warehouse named dbt_wh.
+Why: Warehouses are required for executing SQL queries in Snowflake. We use a cost-effective size (x-small) for dbt development and testing
+
+create database if not exists dbt_db;
+Purpose: Creates a new database called dbt_db only if it doesn't already exist.
+Why: This will hold all your dbt-managed models, staging tables, and other artifacts.
+
+create role if not exists dbt_role;
+Purpose: Creates a new custom role dbt_role if it doesn’t exist.
+Why: To manage fine-grained access controls specific to dbt users
+
+show grants on warehouse dbt_wh;
+Purpose: Displays current grants (permissions) on the dbt_wh warehouse.
+Why: Useful to verify what roles/users currently have access before making changes.
+
+grant usage on warehouse dbt_wh to role dbt_role;
+Purpose: Grants permission to dbt_role to use the dbt_wh warehouse.
+Why: Required so users with dbt_role can run queries via this warehouse.
+
+grant role dbt_role to user sabi;
+Purpose: Assigns the dbt_role to the user sabi.
+Why: Gives sabi the privileges and access associated with the dbt_role.
+
+grant all on database dbt_db to role dbt_role;
+Purpose: Grants full privileges on dbt_db to dbt_role.
+Why: Necessary so that dbt can create schemas, tables, and views in this database.
+
+use role dbt_role;
+Purpose: Switches the session role to dbt_role.
+Why: To validate that this role has sufficient privileges and to start creating objects under this role.
+
+create schema dbt_db.dbt_schema;
+Purpose: Creates a new schema named dbt_schema in the dbt_db database.
+Why: dbt organizes its models into schemas. This is the location where dbt will create tables/views during runs.
+
+ 🛠️ Snowflake Setup for dbt
+
+This SQL script sets up the basic Snowflake environment for running dbt. It includes:
+
+- Warehouse creation (`dbt_wh`)
+- Database setup (`dbt_db`)
+- Role-based access control (`dbt_role`)
+- Schema creation (`dbt_schema`)
+
+Make sure to execute as an `ACCOUNTADMIN` and assign the `dbt_role` to your user (e.g., `sabi`) for access. For more advanced permissioning, consider also using separate roles for production, development, and CI/CD pipelines.
