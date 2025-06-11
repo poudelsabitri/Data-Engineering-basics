@@ -83,6 +83,34 @@ This automation and orchestration improve pipeline reliability, scalability, and
  
 7. Why are you searchig for a new role?
 -->I'm currently on a contract role it's about to  end, so I'm looking for a new opportunity where I can bring my skills to a long-term position and continue growing professionally.
+
+✅ Q1: Describe your experience designing and implementing a data warehouse and schema at a senior level, tied to your projects
+In my role at UnitedHealthcare, I led the design and implementation of a Snowflake-based data warehouse to support healthcare analytics. 
+I designed star and snowflake schemas, built scalable ETL pipelines using Matillion and AWS Glue, and developed dbt models for clean, consistent data transformation.
+The warehouse supported HIPAA compliance through RBAC and data masking, and enabled faster, more accurate reporting for analysts using Power BI and Tableau.
+
+✅ Q2: What tools and technologies have you used to build and optimize ETL/ELT pipelines for Snowflake?
+At UnitedHealthcare, I built and optimized ETL/ELT pipelines using Matillion, AWS Glue, Airflow, and dbt to load large volumes of healthcare data into Snowflake. 
+One challenging pipeline involved processing around 500 million records per month from S3, Redshift, and RDS. 
+I optimized it by switching to Parquet-based bulk loads, using Matillion for parallel orchestration, and applying incremental models in dbt.
+I also tuned Snowflake virtual warehouses for performance and set up monitoring with CloudWatch and Snowflake logs to ensure reliability.
+
+✅ Q3: How do you approach performance tuning and query optimization in Snowflake?
+At T-Mobile, I led Snowflake performance tuning efforts to support real-time telecom analytics.
+My approach included using clustering keys on large event tables to improve pruning, and aligning data loads with Snowflake’s micro-partitioning for better performance. 
+I also created materialized views for frequently accessed metrics to reduce dashboard latency. 
+Additionally, I regularly used the Query Profile tool, avoided SELECT *, and optimized complex queries with CTEs to ensure efficient execution and lower compute costs.
+
+✅ Q4: Experience with RBAC and Data Security in Snowflake (GDPR/HIPAA)
+At UnitedHealthcare, I implemented role-based access control (RBAC) in Snowflake to ensure HIPAA-compliant data handling.
+I created role hierarchies with least-privilege access, applied dynamic data masking on sensitive fields, and enforced row-level security to limit data visibility by department. 
+I also worked closely with compliance teams to meet data privacy standards, including audit logging and encryption in transit and at rest.
+
+✅ Q5: Integration with BI Tools (Tableau, Power BI, Looker) and Supporting Analytics
+I’ve integrated Snowflake with Tableau, Power BI, and Looker to support self-service analytics. 
+At HP and T-Mobile, I built clean, analytics-ready data models using dbt and Snowflake, and created data marts to support dashboarding and reporting. 
+I collaborated with analysts and data scientists to ensure they had access to trusted, well-documented datasets, and I maintained data freshness and performance through incremental models and materialized views.
+
  
 
 
