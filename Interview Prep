@@ -1,6 +1,6 @@
-tell me about the business use cases you have worked on
+1. Tell me about the business use cases you have worked on
 
-I’ve worked on several impactful business use cases in both the telecom and healthcare domains, where I built real-time data platforms to drive business insights.
+-->I’ve worked on several impactful business use cases in both the telecom and healthcare domains, where I built real-time data platforms to drive business insights.
 At T-Mobile, the primary business use case was to enable real-time customer interaction analytics to support targeted marketing campaigns.
 The goal was to process over 10 million daily customer interactions and provide actionable insights to marketing teams. 
 I designed and implemented a Kafka-Spark Streaming pipeline to process this data in real-time. We then integrated the processed data into Google BigQuery via Airflow-managed ETL workflows, enabling marketers to launch more timely and personalized campaigns.
@@ -13,17 +13,9 @@ This project resulted in a 35% reduction in reporting query times, enhancing the
 Across both use cases, the business goals were to drive better decisions through real-time data availability, whether that meant improving marketing precision at T-Mobile or enhancing patient care and operational efficiency at UnitedHealthcare.
 
 
-how have you implemented ETL pipelines?
--->Requirement Gathering
--->Data Extraction
--->Data Transformation
--->Data Loading
--->Automation & Scheduling
--->Data Validation & Quality Checks
--->Error Handling & Logging
--->Optimization & Scalability
--->Documentation & Version Control
-In my experience across UnitedHealthcare, HP, and T-Mobile, I have designed and implemented scalable ETL pipelines for both batch and real-time processing using tools like Apache Spark (PySpark), Databricks, AWS Glue, Google Dataflow, and Azure Data Factory.
+2. How have you implemented ETL pipelines?
+
+-->In my experience across UnitedHealthcare, HP, and T-Mobile, I have designed and implemented scalable ETL pipelines for both batch and real-time processing using tools like Apache Spark (PySpark), Databricks, AWS Glue, Google Dataflow, and Azure Data Factory.
 I extract data from diverse sources such as AWS S3, BigQuery, Redshift, Kinesis, Pub/Sub, and APIs, and transform it through advanced techniques including schema evolution, de-duplication, and business rule application. 
 My data loading processes into Snowflake, BigQuery, Redshift, and Azure Synapse are optimized for performance through partitioning, clustering, and indexing. 
 I automate workflows using Apache Airflow and Cloud Composer, with monitoring and alerts via CloudWatch and Stackdriver.
@@ -31,23 +23,18 @@ Data quality and validation are enforced at multiple stages, supported by robust
 I also focus on pipeline optimization and scalability, achieving significant performance gains such as 40% latency reduction. 
 All ETL logic is documented and version-controlled with Git and CI/CD pipelines to ensure reliability and transparency.
 
-
-
-How have you used matillion to develop ETL?
+3. How have you used matillion to develop ETL?
 I have used **Matillion** to build scalable and efficient ETL pipelines by extracting data from various sources using built-in connectors and custom scripts, transforming it with components like Join, Calculator, and Aggregator, and orchestrating workflows 
 through modular jobs with conditional logic and retries. I leveraged **parameterization** to make jobs dynamic across environments, implemented **logging and monitoring** for visibility and alerts, 
 and optimized performance by pushing transformations to the data warehouse and using staging strategies. This approach ensured robust, reusable, and production-ready pipeline development.
 
-
-
-Challenges you faced while migrating pipelines?
+4. Challenges you faced while migrating pipelines?
 During pipeline migration, I faced challenges such as data inconsistency, schema and data type mismatches, and null or missing values, which required thorough data cleansing, schema mapping, and type handling.
 Data skewness impacted performance, so I applied repartitioning and salting techniques to balance processing.
 Additionally, **pipeline execution times** were initially high due to inefficiencies, which I resolved through query optimization and resource tuning. 
 Addressing these issues ensured reliable, high-performing, and accurate data pipelines across systems.
 
-
-how to ensure data governance and complaince?
+5. how to ensure data governance and complaince?
 When handling sensitive healthcare data, I implement strict data governance and security controls to comply with HIPAA and GDPR regulations:
 → Role-Based Access Control (RBAC)
 I enforce least privilege access by configuring IAM roles and permissions for data engineers, analysts, and third-party systems.
@@ -79,6 +66,24 @@ I also implement access expiration and revocation for temporary users or third-p
 → Data Validation and Quality Rules
 I define validation rules to enforce schema conformity, mandatory field checks (like diagnosis code, patient ID), and value constraints.
 Invalid or incomplete records are logged and quarantined for review—supporting data integrity, a core HIPAA principle.
-By combining these practices, I ensure healthcare data pipelines are secure, compliant, and auditable—safeguarding both patient privacy and regulatory obligations. This foundation also enables scalable data sharing and analytics within a trusted and compliant framework.
+By combining these practices, I ensure healthcare data pipelines are secure, compliant, and auditable—safeguarding both patient privacy and regulatory obligations. 
+This foundation also enables scalable data sharing and analytics within a trusted and compliant framework.
+
+6. How have you used airflow for workflow automation?
+Apache Airflow is an open-source workflow orchestration tool that helps automate and manage complex data pipelines. In my data engineering projects, I use Airflow to schedule, monitor, and coordinate ETL workflows by defining tasks and their dependencies as Python code (DAGs).
+Typically, I:
+Define DAGs that represent data pipelines with tasks like data extraction, transformation, and loading.
+Use built-in operators or custom scripts to execute each step.
+Set schedules for automated pipeline runs (e.g., daily or hourly).
+Monitor task progress and logs through Airflow’s UI.
+Configure alerts to notify the team on failures.
+Scale execution using Airflow’s executor options depending on workload.
+For example, in a daily sales data pipeline, I schedule tasks to pull data from APIs, process it with Spark jobs, load it into Snowflake, and send completion alerts — all managed smoothly via Airflow.
+This automation and orchestration improve pipeline reliability, scalability, and maintainability, which is critical in production data engineering environments
+ 
+7. Why are you searchig for a new role?
+-->I'm currently on a contract role it's about to  end, so I'm looking for a new opportunity where I can bring my skills to a long-term position and continue growing professionally.
+ 
+
 
 
