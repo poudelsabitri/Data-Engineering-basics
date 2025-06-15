@@ -111,7 +111,22 @@ I’ve integrated Snowflake with Tableau, Power BI, and Looker to support self-s
 At HP and T-Mobile, I built clean, analytics-ready data models using dbt and Snowflake, and created data marts to support dashboarding and reporting. 
 I collaborated with analysts and data scientists to ensure they had access to trusted, well-documented datasets, and I maintained data freshness and performance through incremental models and materialized views.
 
- 
+How do you handle DAGs failure?
+When a DAG or task fails, I first ensure that retries with exponential backoff are configured to handle  issues automatically. I implement failure callbacks to send immediate alerts via Slack or email to notify the team.
+I design tasks to be idempotent, so reruns don’t cause data duplication or errors, and I use checkpoints to allow smooth recovery.
+I monitor logs closely using Airflow h and centralized logging tools like CloudWatch to quickly identify root causes. 
+For frequent failure patterns, I automate remediation steps where possible. Lastly, I perform root cause analysis after failures to improve pipeline reliability continuously.
+
+
+how do you create DAGs in airflow?
+When creating DAGs in Airflow, I start by defining default arguments such as owner, start_date, retries, and retry_delay to control retry logic and notifications.
+I then instantiate the DAG object with a unique ID and schedule interval (e.g., @daily, CRON).
+Tasks are created using operators depending on the job type—commonly PythonOperator, BashOperator, SparkSubmitOperator, or SnowflakeOperator.
+I write modular Python functions and pass them to these operators. I define task dependencies using >> or .set_upstream() methods to ensure proper execution order.
+I use Airflow Variables and Jinja templating for dynamic DAGs and parameterization. 
+For deployment, I use Git-based CI/CD pipelines that push DAGs into the Airflow environment (e.g., AWS MWAA, GCP Composer, or self-managed Airflow).
+Finally, I validate DAGs in a staging environment before production, and monitor runs using Airflow’s UI and alerting tools like Slack or email for failures.
+
 
 
 
