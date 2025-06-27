@@ -1,0 +1,41 @@
+1. Write query to find total_sales amount for each months of the year 2023.
+
+SELECT SUM(amount) as total_sales,
+Month(sales_date) AS Month
+FROM sales
+WHERE Year(sales_date)=2023
+GROUP BY Month;
+
+2. Write a query to find the names of customers who have placed an order after January 1, 2023.
+
+
+SELECT C.CustomerName 
+FROM Customers C
+JOIN Orders O 
+ON C.CustomerID=O.CustomerID
+WHERE O.OrderDate>'2023-01-01;
+
+3. Write a query to find the 2nd highest salary for department 101.
+
+SELECT DISTINCT(salary) AS Highest_salary 
+FROM Employees
+WHERE DepertmentID=101
+ORDER BY salary DESC
+LIMIT 1 OFFSET 1;
+
+4. Write a query to find the names of all products that have never been sold
+
+SELECT p.ProductName 
+FROM Products p
+LEFT JOIN Sales s
+ON p.ProductID=s.ProductID
+WHERE s.SalesID IS NULL;
+
+5. Write a query to find the IDs of customers whose total order amount exceeds $1000
+
+SELECT CustomerID 
+FROM Orders
+GROUP BY CustomerID
+HAVING SUM(OrderAmount)> 1000;
+
+
