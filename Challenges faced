@@ -1,0 +1,40 @@
+1) Can you describe a major challenge you faced while building the enterprise data lake at UnitedHealthcare and how you resolved it?
+
+Answer (spoken style):
+
+One key challenge was ensuring data quality and compliance while ingesting data from multiple healthcare systems that handled PHI. The schemas were inconsistent, and validation rules often broke pipelines.
+To solve this, I implemented schema validation in AWS Glue using PySpark and integrated automated quality checks via CloudWatch and Lambda alerts. I also designed the ETL to enforce HIPAA compliance — masking sensitive attributes and tracking access through IAM roles.
+This improved reliability significantly — pipeline failures dropped by about 40%, and the datasets became audit-ready for internal governance reviews.
+
+2)What was the toughest part of managing big data pipelines on Google Cloud at HP, and how did you handle it?
+
+Answer:
+
+At HP, our IoT pipelines on BigQuery and Dataflow were initially expensive due to inefficient queries and long-running jobs. We had millions of streaming device events daily, so query optimization was critical.
+I solved this by introducing partitioning and clustering in BigQuery, restructuring tables based on time-series data. I also used slot reservations and workload management to control compute usage and implemented materialized views for common queries.
+This reduced query costs by nearly 25% and sped up average execution time by around 30%. I also automated the CI/CD deployment of Dataflow jobs using Terraform and Cloud Composer, which improved our release cycle efficiency.
+
+3) You worked on real-time data streaming at T-Mobile — what was the biggest technical challenge you faced?
+
+Answer:
+
+The main challenge was maintaining low-latency processing while scaling Kafka and Spark Streaming to handle millions of customer events daily.
+We initially faced bottlenecks with Spark micro-batches and Kafka consumer lag. I introduced partition tuning and backpressure handling, optimized Spark checkpointing, and used memory caching for high-frequency topics.
+On top of that, I implemented Prometheus and Grafana dashboards for observability, which helped us catch issues early and reduce latency by nearly 40%.
+The result was a more resilient real-time analytics platform that improved marketing insights and reduced downtime.
+
+4)You’ve migrated data from on-prem to cloud environments in multiple roles. What were the biggest migration challenges and how did you overcome them?
+
+Answer:
+
+The biggest challenges were data consistency during transfer and schema drift across environments.
+I handled this by creating validation scripts in Python and Spark, using record counts and hash checks to ensure parity. I also leveraged CDC (Change Data Capture) with tools like AWS DMS and Datastream to keep systems in sync.
+Another challenge was stakeholder coordination — I used Airflow DAGs with retries and alerting to automate migration runs, which made the entire cutover smoother and traceable.
+
+5) Tell me about a situation where requirements were unclear — how did you ensure project success?
+
+Answer:
+
+At UnitedHealthcare, we were tasked with building predictive analytics pipelines for patient outcomes, but the business requirements were initially vague.
+I collaborated closely with the data science and clinical teams to map model inputs and design modular ELT flows in dbt and Databricks. I built prototypes, validated assumptions with stakeholders, and iteratively refined transformations.
+That process turned an open-ended request into a fully productionized pipeline that cut reporting time by 35% and enabled real-time insights for care teams.
