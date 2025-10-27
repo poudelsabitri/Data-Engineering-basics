@@ -1,0 +1,77 @@
+1) What’s the difference between ETL and ELT? When would you choose one over the other?
+
+Key points to mention:
+
+ETL (Extract → Transform → Load): Transformation happens before loading data into the warehouse. Best for on-prem systems or when data transformations are heavy and require pre-processing.
+
+ELT (Extract → Load → Transform): Raw data is loaded first, then transformed within the data warehouse. Ideal for modern cloud data warehouses (e.g., Snowflake, BigQuery, Redshift) where compute is scalable.
+
+Example answer:
+
+“In my last project, we used ELT with Snowflake to leverage warehouse compute for transformations, which improved pipeline scalability and reduced data movement.”
+
+2) How do you design a fault-tolerant and scalable data pipeline?
+
+Key points:
+
+Use modular orchestration (Airflow, ADF, Glue, Databricks Workflows).
+
+Implement idempotency to handle re-runs safely.
+
+Add checkpointing and retry mechanisms.
+
+Store intermediate data in staging areas (S3, ADLS).
+
+Use monitoring/alerting tools (CloudWatch, Datadog, Prometheus).
+
+Example answer:
+
+“I designed pipelines in ADF with error handling using retries and failure notifications through Logic Apps, ensuring data reliability.”
+
+3) What’s the difference between partitioning, bucketing, and clustering?
+
+Key points:
+
+Partitioning: Divides data into separate directories/files based on key values (e.g., date). Improves query performance by pruning.
+
+Bucketing: Divides data into fixed number of buckets using a hash function — ensures even distribution.
+
+Clustering: Used in BigQuery/Snowflake — organizes data within storage blocks to improve query pruning.
+
+Example:
+
+“In one project, I partitioned fact tables by date and clustered by region in BigQuery — it reduced query time by 60%.”
+
+4) How do you ensure data quality and consistency in pipelines?
+
+Key points:
+
+Implement validation checks (nulls, duplicates, range constraints).
+
+Use data quality frameworks (e.g., Great Expectations, dbt tests).
+
+Add checkpoints and reconciliation logic.
+
+Track lineage and schema drift.
+
+Example answer:
+
+“We integrated Great Expectations in our ETL jobs to enforce schema validation and alert when unexpected changes occurred.”
+
+5) How would you optimize a slow-running SQL query or data pipeline?
+
+Key points:
+
+Analyze query plan and add indexes/partitions.
+
+Reduce shuffles (in Spark).
+
+Use incremental loads instead of full refreshes.
+
+Avoid unnecessary joins; pre-aggregate data.
+
+Tune parallelism and cluster size.
+
+Example answer:
+
+“I optimized a Spark ETL by reducing wide joins and caching reusable datasets, which cut runtime from 45 minutes to under 10.”
