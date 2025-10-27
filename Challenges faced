@@ -1,16 +1,12 @@
 1) Can you describe a major challenge you faced while building the enterprise data lake at UnitedHealthcare and how you resolved it?
 
-Answer (spoken style):
-
-One key challenge was ensuring data quality and compliance while ingesting data from multiple healthcare systems that handled PHI. The schemas were inconsistent, and validation rules often broke pipelines.
+Answer : One key challenge was ensuring data quality and compliance while ingesting data from multiple healthcare systems that handled PHI. The schemas were inconsistent, and validation rules often broke pipelines.
 To solve this, I implemented schema validation in AWS Glue using PySpark and integrated automated quality checks via CloudWatch and Lambda alerts. I also designed the ETL to enforce HIPAA compliance — masking sensitive attributes and tracking access through IAM roles.
 This improved reliability significantly — pipeline failures dropped by about 40%, and the datasets became audit-ready for internal governance reviews.
 
 2)What was the toughest part of managing big data pipelines on Google Cloud at HP, and how did you handle it?
 
-Answer:
-
-At HP, our IoT pipelines on BigQuery and Dataflow were initially expensive due to inefficient queries and long-running jobs. We had millions of streaming device events daily, so query optimization was critical.
+Answer: At HP, our IoT pipelines on BigQuery and Dataflow were initially expensive due to inefficient queries and long-running jobs. We had millions of streaming device events daily, so query optimization was critical.
 I solved this by introducing partitioning and clustering in BigQuery, restructuring tables based on time-series data. I also used slot reservations and workload management to control compute usage and implemented materialized views for common queries.
 This reduced query costs by nearly 25% and sped up average execution time by around 30%. I also automated the CI/CD deployment of Dataflow jobs using Terraform and Cloud Composer, which improved our release cycle efficiency.
 
@@ -38,3 +34,89 @@ Answer:
 At UnitedHealthcare, we were tasked with building predictive analytics pipelines for patient outcomes, but the business requirements were initially vague.
 I collaborated closely with the data science and clinical teams to map model inputs and design modular ELT flows in dbt and Databricks. I built prototypes, validated assumptions with stakeholders, and iteratively refined transformations.
 That process turned an open-ended request into a fully productionized pipeline that cut reporting time by 35% and enabled real-time insights for care teams.
+
+What was causing the skew, and how did you identify it?
+
+Answer:
+
+The skew was mainly due to uneven key distribution in join and aggregation columns. A few keys had millions of records while others had very few.
+I identified this by checking Spark UI metrics — the shuffle read/write sizes and stage durations showed some tasks taking much longer than others.
+I also ran a quick groupBy count to find the high-frequency keys. Once we identified them, we handled skew using salting and adaptive query execution (AQE), which automatically split skewed partitions.
+
+2️⃣ Can you explain how Adaptive Query Execution (AQE) helped?
+
+Answer:
+
+AQE dynamically optimizes query plans at runtime based on actual data statistics.
+For example, instead of planning static joins or shuffle partitions upfront, AQE automatically applied broadcast joins where one side was small and reduced shuffle partitions where data was skewed.
+It helped to reduce shuffle volume, and that cut down the overall runtime by nearly 30–40%.
+We enabled AQE in Databricks by setting the Spark config:
+
+spark.conf.set("spark.sql.adaptive.enabled", "true")
+
+3️⃣ What’s the difference between broadcast join and shuffle join? When do you use each?
+
+Answer:
+
+A broadcast join copies a small dataset to all worker nodes, so no shuffle is required.
+A shuffle join redistributes both tables across the cluster based on the join key, which can be expensive.
+In our case, the reference fraud rule table was small (less than 10MB), so we used a broadcast join with the main transaction table to save shuffle cost.
+We used Spark’s automatic broadcast mechanism, but also tuned spark.sql.autoBroadcastJoinThreshold when needed.
+
+4️⃣ How did you ensure that cost optimization did not impact data quality or completeness?
+
+Answer:
+
+Good question — we added validation checkpoints at each stage of the ETL.
+After optimization, we compared record counts and hash checks between pre- and post-optimization outputs.
+We also kept end-to-end lineage logs and used Delta Lake’s ACID guarantees to ensure data consistency during merges.
+So while performance improved, data accuracy and completeness were fully preserved.
+
+5️⃣ How much improvement did you achieve in cost and time after optimization?
+
+Answer:
+
+Before optimization, the job took around 90–100 minutes per run and consumed large cluster hours.
+After implementing AQE, broadcast joins, and autoscaling, the same job finished in about 40–45 minutes on average, cutting Databricks cost by ~35% and AWS compute cost by ~25%.
+Plus, enabling auto-termination of idle clusters ensured no unused compute time.
+
+6️⃣ What challenges did you face while implementing autoscaling and auto-termination?
+
+Answer:
+
+Initially, the main challenge was ensuring cluster warm-up time didn’t delay the ETL.
+We configured autoscaling thresholds carefully and kept a minimum number of worker nodes active for quick job start-up.
+For auto-termination, we added a buffer window of 15 minutes after job completion to prevent accidental termination during late retries or monitoring steps.
+
+7️⃣ How did you handle schema changes (dynamic schema) in this pipeline?
+
+Answer:
+
+The incoming fraud event data sometimes had evolving schemas — new columns were added or existing ones were renamed.
+To handle this dynamically, we used merge schema = true during writes in Delta Lake, and also defined schema inference in Spark’s read step.
+This avoided job failures due to schema drift while maintaining backward compatibility.
+
+8️⃣ How did you test or validate your optimization changes before applying them to production?
+
+Answer:
+
+We created a staging Databricks environment with sampled data and ran A/B comparisons between old and optimized jobs.
+We monitored performance metrics, shuffle volume, and record counts.
+Once the results were stable, we scheduled a production rollout via Databricks Jobs with version control in Git, and used rollback plans in case of unexpected regressions.
+
+9️⃣ If your dataset grows 5x next year, how would you ensure scalability?
+
+Answer:
+
+I’d first review the data partitioning strategy and possibly switch to incremental processing rather than full refreshes.
+I’d leverage Delta Lake ZORDER for faster lookups, enable dynamic partition pruning, and monitor AQE’s auto-tuning behavior.
+Also, moving toward a serverless Databricks SQL warehouse for downstream queries could further decouple compute from storage for scalability.
+
+10️⃣ What monitoring strategy did you use to ensure ETL reliability?
+
+Answer:
+
+We implemented Databricks job monitoring with CloudWatch metrics and custom logging.
+Every job emitted start/end times, record counts, and exceptions to CloudWatch.
+Alerts were configured to trigger via AWS SNS and email if a job exceeded SLA or failed.
+That helped us proactively respond to issues and maintain operational visibility.
